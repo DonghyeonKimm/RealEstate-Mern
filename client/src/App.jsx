@@ -9,7 +9,7 @@ import Header from "./components/Header";
 export default function App() {
   return (
     <BrowserRouter>
-    <Header>
+    <Header/>
       <Routes>
         <Route path="/" element={<Home/>}></Route>
         <Route path="/sign-in" element={<Signin />}></Route>
@@ -17,7 +17,6 @@ export default function App() {
         <Route path="/about" element={<About/>}></Route>
         <Route path="/profile" element={<Profile/>}></Route>
       </Routes>
-    </Header>
     </BrowserRouter>
   )
 }
