@@ -8,6 +8,7 @@ import {
 import { app } from '../firebase';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { set } from 'mongoose';
 
 export default function UpdateListing() {
   const { currentUser } = useSelector((state) => state.user);
@@ -36,9 +37,18 @@ export default function UpdateListing() {
   useEffect(() => {
     const fetchListing = async () => {
         const listingId = params.listingId;
+        const res = await fetch(`/api/listing/get/${listingId}`);
+        const data = await res.json();
+        setFormData(data);
+        if (data.success === false) {
+          console.log(data.message)
+          return;
+        }
     };
     fetchListing();
   }, []);
+
+
   const handleImageSubmit = (e) => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
       setUploading(true);
@@ -139,7 +149,7 @@ export default function UpdateListing() {
         return setError('Discount price must be lower than regular price');
       setLoading(true);
       setError(false);
-      const res = await fetch('/api/listing/create', {
+      const res = await fetch(`/api/listing/update/${params.listingId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
