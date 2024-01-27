@@ -62,6 +62,8 @@ export const getListing = async (req, res, next) => {
   }
 };
 //added test search api route
+//got queires like limit, start index, offer, furnish,search termn, and sort.
+//Based on them, we are going to search inside all the listings
 export const getListings = async (req, res, next) => {
   try {
     const limit = parseInt(req.query.limit) || 9;
