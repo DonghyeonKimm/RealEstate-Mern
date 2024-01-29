@@ -17,7 +17,36 @@ export default function Search() {
     const [loading, setLoading] = useState(false);
     const [listings, setListings] = useState([]);
     const [showMore, setShowMore] = useState(false);
-      
+    
+    useEffect(() => {
+        const urlParams = new URLSearchParams(location.search);
+        const searchTermFromUrl = urlParams.get('searchTerm');
+        const typeFromUrl = urlParams.get('type');
+        const parkingFromUrl = urlParams.get('parking');
+        const furnishedFromUrl = urlParams.get('furnished');
+        const offerFromUrl = urlParams.get('offer');
+        const sortFromUrl = urlParams.get('sort');
+        const orderFromUrl = urlParams.get('order');
+    
+        if (
+          searchTermFromUrl ||
+          typeFromUrl ||
+          parkingFromUrl ||
+          furnishedFromUrl ||
+          offerFromUrl ||
+          sortFromUrl ||
+          orderFromUrl
+        ) {
+          setSidebardata({
+            searchTerm: searchTermFromUrl || '',
+            type: typeFromUrl || 'all',
+            parking: parkingFromUrl === 'true' ? true : false,
+            furnished: furnishedFromUrl === 'true' ? true : false,
+            offer: offerFromUrl === 'true' ? true : false,
+            sort: sortFromUrl || 'created_at',
+            order: orderFromUrl || 'desc',
+          });
+        }
     const handleChange = (e) => {
         if (
           e.target.id === 'all' ||
@@ -51,7 +80,7 @@ export default function Search() {
           setSidebardata({ ...sidebardata, sort, order });
         }
       };
-
+      //set url params by conveting to string
       const handleSubmit = (e) => {
         e.preventDefault();
         const urlParams = new URLSearchParams();
@@ -65,7 +94,7 @@ export default function Search() {
         const searchQuery = urlParams.toString();
         navigate(`/search?${searchQuery}`);
       };
-      
+
   return (
     <div className='flex flex-col md:flex-row'>
         <div className='p-7 border-b-2 md:border-r-2
