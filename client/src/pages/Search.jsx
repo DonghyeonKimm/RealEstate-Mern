@@ -18,6 +18,40 @@ export default function Search() {
     const [listings, setListings] = useState([]);
     const [showMore, setShowMore] = useState(false);
       
+    const handleChange = (e) => {
+        if (
+          e.target.id === 'all' ||
+          e.target.id === 'rent' ||
+          e.target.id === 'sale'
+        ) {
+          setSidebardata({ ...sidebardata, type: e.target.id });
+        }
+    
+        if (e.target.id === 'searchTerm') {
+          setSidebardata({ ...sidebardata, searchTerm: e.target.value });
+        }
+    
+        if (
+          e.target.id === 'parking' ||
+          e.target.id === 'furnished' ||
+          e.target.id === 'offer'
+        ) {
+          setSidebardata({
+            ...sidebardata,
+            [e.target.id]:
+              e.target.checked || e.target.checked === 'true' ? true : false,
+          });
+        }
+    
+        if (e.target.id === 'sort_order') {
+          const sort = e.target.value.split('_')[0] || 'created_at';
+    
+          const order = e.target.value.split('_')[1] || 'desc';
+    
+          setSidebardata({ ...sidebardata, sort, order });
+        }
+      };
+
   return (
     <div className='flex flex-col md:flex-row'>
         <div className='p-7 border-b-2 md:border-r-2
@@ -29,13 +63,17 @@ export default function Search() {
                 id = 'searchTerm'
                 placeholder='Search...'
                 className='border rounded-lg p-3 w-full'
+                value = {sidebardata.searchTerm}
+                onChange={handleChange}
                 />
             </div>
             <div className='flex gap-2 flex-wrap items-center'>
                 <label className='font-semibold'>Type:</label>
                 <div className='flex gap-2'>
                     <input type="checkbox" id = "all"
-                    className='w-5'/>
+                    className='w-5'
+                    onChange={handleChange}
+                    checked = {sidebardata.type === 'all'}/>
                     <span>Rent & Sale</span>
                 </div>
                 <div className='flex gap-2'>
