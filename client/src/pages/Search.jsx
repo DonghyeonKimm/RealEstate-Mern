@@ -17,36 +17,55 @@ export default function Search() {
     const [loading, setLoading] = useState(false);
     const [listings, setListings] = useState([]);
     const [showMore, setShowMore] = useState(false);
-    
-    useEffect(() => {
-        const urlParams = new URLSearchParams(location.search);
-        const searchTermFromUrl = urlParams.get('searchTerm');
-        const typeFromUrl = urlParams.get('type');
-        const parkingFromUrl = urlParams.get('parking');
-        const furnishedFromUrl = urlParams.get('furnished');
-        const offerFromUrl = urlParams.get('offer');
-        const sortFromUrl = urlParams.get('sort');
-        const orderFromUrl = urlParams.get('order');
-    
-        if (
-          searchTermFromUrl ||
-          typeFromUrl ||
-          parkingFromUrl ||
-          furnishedFromUrl ||
-          offerFromUrl ||
-          sortFromUrl ||
-          orderFromUrl
-        ) {
-          setSidebardata({
-            searchTerm: searchTermFromUrl || '',
-            type: typeFromUrl || 'all',
-            parking: parkingFromUrl === 'true' ? true : false,
-            furnished: furnishedFromUrl === 'true' ? true : false,
-            offer: offerFromUrl === 'true' ? true : false,
-            sort: sortFromUrl || 'created_at',
-            order: orderFromUrl || 'desc',
-          });
-        }
+       //we want to set the search term equal to side bar
+            //change is detected by use effect and fill the information on left
+            useEffect(() => {
+                const urlParams = new URLSearchParams(location.search);
+                const searchTermFromUrl = urlParams.get('searchTerm');
+                const typeFromUrl = urlParams.get('type');
+                const parkingFromUrl = urlParams.get('parking');
+                const furnishedFromUrl = urlParams.get('furnished');
+                const offerFromUrl = urlParams.get('offer');
+                const sortFromUrl = urlParams.get('sort');
+                const orderFromUrl = urlParams.get('order');
+            
+                if (
+                  searchTermFromUrl ||
+                  typeFromUrl ||
+                  parkingFromUrl ||
+                  furnishedFromUrl ||
+                  offerFromUrl ||
+                  sortFromUrl ||
+                  orderFromUrl
+                ) {
+                  setSidebardata({
+                    searchTerm: searchTermFromUrl || '',
+                    type: typeFromUrl || 'all',
+                    parking: parkingFromUrl === 'true' ? true : false,
+                    furnished: furnishedFromUrl === 'true' ? true : false,
+                    offer: offerFromUrl === 'true' ? true : false,
+                    sort: sortFromUrl || 'created_at',
+                    order: orderFromUrl || 'desc',
+                  });
+                }
+            
+                const fetchListings = async () => {
+                  setLoading(true);
+                  setShowMore(false);
+                  const searchQuery = urlParams.toString();
+                  const res = await fetch(`/api/listing/get?${searchQuery}`);
+                  const data = await res.json();
+                  if (data.length > 8) {
+                    setShowMore(true);
+                  } else {
+                    setShowMore(false);
+                  }
+                  setListings(data);
+                  setLoading(false);
+                };
+            
+                fetchListings();
+              }, [location.search]);
     const handleChange = (e) => {
         if (
           e.target.id === 'all' ||
