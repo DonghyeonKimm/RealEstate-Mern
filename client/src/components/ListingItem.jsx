@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { MdLocationOn } from 'react-icons/md';
-
+//get listing from search in the listing item as the input
 export default function ListingItem({ listing }) {
   return(
     <div className='bg-white flex flex-col gap-4'>

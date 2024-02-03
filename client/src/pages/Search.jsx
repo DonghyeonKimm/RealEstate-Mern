@@ -199,10 +199,17 @@ export default function Search() {
     {!loading && listings.length === 0 && (
       <p className='text-xl textslate-700 text-center w-full'>No listing found!</p>
     )}
-    {//get each listing and map it to listing item
-      !loading && listings && listings.map((listing) => <ListingItem key = {listing._id} listing = {listing}/>)
-      
-    }
+          {loading && (
+            <p className='text-xl text-slate-700 text-center w-full'>
+              Loading...
+            </p>
+          )}
+
+          {!loading &&
+            listings &&
+            listings.map((listing) => (
+              <ListingItem key={listing._id} listing={listing} />
+            ))}
             </div>
         </div>
     </div>
