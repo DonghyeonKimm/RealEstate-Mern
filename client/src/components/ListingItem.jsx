@@ -5,6 +5,7 @@ import { MdLocationOn } from 'react-icons/md';
 //we want to have a link that covers the whole card
 export default function ListingItem({listing}) {
   return(
+          //everything inside this link is clickable
     <div className='bg-white flex flex-col gap-4'>
       <Link to={`/listing/${listing._id}`}>
         <img
